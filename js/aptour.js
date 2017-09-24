@@ -36,7 +36,7 @@ APTour.prototype.initialize = function() {
 
   // Define the stops, cursor and offset.
   this.stops = [];
-  this.cursor = 4;
+  this.cursor = 0;
   this.offset = 20; // The distance between the windown and the parent element.
 
   // Populate the stops array with all the tour objects.
@@ -96,27 +96,33 @@ APTour.prototype.moveTo = function(index) {
       // Center horizontally
       left = parentSpecs.left + ((parent.offsetWidth - this.tourWindow.offsetWidth) / 2);
       top = parentSpecs.top - this.tourWindow.offsetHeight - this.offset - bodySpecs.top;
+      scrollPosition = parentSpecs.top - bodySpecs.top - this.tourWindow.offsetHeight - this.offset;
       break;
 
     case 'right':
       left = parentSpecs.right + this.offset;
       // Center vertically
       top = (parentSpecs.top + parentSpecs.bottom) / 2 - this.tourWindow.offsetHeight / 2 - bodySpecs.top;
+      scrollPosition = parentSpecs.top - bodySpecs.top;
       break;
 
     case 'bottom':
       // Center horizontally
       left = parentSpecs.left + ((parent.offsetWidth - this.tourWindow.offsetWidth) / 2);
       top = parentSpecs.bottom + this.offset - bodySpecs.top;
+      scrollPosition = parentSpecs.top - bodySpecs.top;
       break;
 
     case 'left':
       left = parentSpecs.left - this.offset - this.tourWindow.offsetWidth;
       // Center vertically
       top = (parentSpecs.top + parentSpecs.bottom) / 2 - this.tourWindow.offsetHeight / 2 - bodySpecs.top;
+      scrollPosition = parentSpecs.top - bodySpecs.top;
       break;
   }
 
+  // window.scrollTo(xCoord, yCoord);
+  window.scrollTo(0, scrollPosition);
   this.tourWindow.style.left = left + 'px';
   this.tourWindow.style.top = top + 'px';
 };
