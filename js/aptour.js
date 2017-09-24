@@ -19,6 +19,9 @@ function APTour() {
     return;
   }
 
+  // Handle navigation button clicks.
+  document.body.addEventListener('click', this.handleClicks.bind(this));
+
   // Initialize the tour.
   this.initialize();
 }
