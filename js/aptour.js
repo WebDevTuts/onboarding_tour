@@ -120,3 +120,38 @@ APTour.prototype.moveTo = function(index) {
   this.tourWindow.style.left = left + 'px';
   this.tourWindow.style.top = top + 'px';
 };
+
+/**
+ * Handles click events.
+ *
+ * @function
+ * @param {Object} event - The click event.
+ */
+APTour.prototype.handleClicks = function(event) {
+  var targetAttr = event.target.getAttribute('data-aptour-nav');
+
+  // Only listne for button clicks.
+  if(targetAttr) {
+    event.preventDefault();
+
+    switch(targetAttr) {
+      case 'prev':
+        if(this.cursor > 0) {
+          this.tourItems[this.cursor].classList.remove('aptour-active');
+          this.moveTo(--this.cursor);
+        }
+        break;
+      case 'next':
+        if(this.cursor < this.stops.length - 1) {
+          this.tourItems[this.cursor].classList.remove('aptour-active');
+          this.moveTo(++this.cursor);
+        }
+      break;
+      case 'close':
+        // Delete the window.
+        document.body.removeChild(this.overlay);
+        document.body.removeChild(this.tourWindow);
+        break;
+    }
+  }
+};
