@@ -61,3 +61,59 @@ APTour.prototype.initialize = function() {
 
   this.moveTo(this.cursor);
 };
+
+/**
+ * Shows a specific stop.
+ *
+ * @function
+ * @param {Number} index - The position of the stop we need to sho.
+ */
+APTour.prototype.moveTo = function(index) {
+  var parent = this.tourItems[index],
+  parentSpecs = parent.getBoundingClientRect(),
+  bodySpecs = document.body.getBoundingClientRect(),
+  position = this.stops[index].position,
+  left, top, scrollPosition;
+
+  // If the CSS position isn't set, set to relative.
+  if(parent.style.position === '') {
+    parent.style.position = 'relative';
+  }
+
+  // Add the active class.
+  parent.classList.add('aptour-active');
+
+  // Set the tour window contents.
+  this.tourWindow.querySelector('header').innerHTML = this.stops[index].title;
+  this.tourWindow.querySelector('.aptour-window-desc').innerHTML = this.stops[index].desc;
+
+  // Set the tour window coordinates.
+  switch(position) {
+    case 'top':
+      // Center horizontally
+      left = parentSpecs.left + ((parent.offsetWidth - this.tourWindow.offsetWidth) / 2);
+      top = parentSpecs.top - this.tourWindow.offsetHeight - this.offset - bodySpecs.top;
+      break;
+
+    case 'right':
+      left = parentSpecs.right + this.offset;
+      // Center vertically
+      top = (parentSpecs.top + parentSpecs.bottom) / 2 - this.tourWindow.offsetHeight / 2 - bodySpecs.top;
+      break;
+
+    case 'bottom':
+      // Center horizontally
+      left = parentSpecs.left + ((parent.offsetWidth - this.tourWindow.offsetWidth) / 2);
+      top = parentSpecs.bottom + this.offset - bodySpecs.top;
+      break;
+
+    case 'left':
+      left = parentSpecs.left - this.offset - this.tourWindow.offsetWidth;
+      // Center vertically
+      top = (parentSpecs.top + parentSpecs.bottom) / 2 - this.tourWindow.offsetHeight / 2 - bodySpecs.top;
+      break;
+  }
+
+  this.tourWindow.style.left = left + 'px';
+  this.tourWindow.style.top = top + 'px';
+};
